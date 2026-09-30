@@ -1,0 +1,2182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AboveFL360 | DGCA Meteorology Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --orange: #e8451e;
+        --orange-d: #c93a17;
+        --ink: #0c0c0c;
+        --bg: #ffffff;
+        --soft: #f6f4f1;
+        --line: #e4e0da;
+        --mute: #6b6b6b;
+        --green: #0a8a4a;
+        --red: #c8281e;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Inter", system-ui, sans-serif;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      .logo {
+        font-family: "Archivo", sans-serif;
+        font-weight: 900;
+        font-size: 26px;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        white-space: nowrap;
+      }
+      .logo b {
+        color: var(--orange);
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: "Archivo", sans-serif;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+      .hidden {
+        display: none !important;
+      }
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* top bar */
+      .top {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: #fff;
+        border-bottom: 1px solid var(--line);
+      }
+      .top .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 68px;
+        gap: 16px;
+      }
+      .timer {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .timer .t {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        font-size: 22px;
+        color: var(--ink);
+        padding: 6px 14px;
+        border: 2px solid var(--ink);
+        border-radius: 6px;
+        min-width: 130px;
+        text-align: center;
+      }
+      .timer.low .t {
+        border-color: var(--orange);
+        color: var(--orange);
+        animation: pulse 1s infinite;
+      }
+      @keyframes pulse {
+        50% {
+          background: #fff1ec;
+        }
+      }
+      .prog {
+        color: var(--mute);
+      }
+      .prog b {
+        color: var(--ink);
+      }
+
+      /* start */
+      .hero {
+        padding: 64px 0 40px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 56px;
+        align-items: start;
+      }
+      .eyebrow {
+        color: var(--orange);
+        margin-bottom: 18px;
+      }
+      .hero h1 {
+        font-size: clamp(44px, 7vw, 92px);
+        margin-bottom: 22px;
+      }
+      .hero p.lead {
+        font-size: 19px;
+        color: #3d3d3d;
+        max-width: 520px;
+      }
+      .rules {
+        margin-top: 28px;
+        border-top: 1px solid var(--line);
+      }
+      .rules div {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 15px;
+      }
+      .rules span:first-child {
+        color: var(--mute);
+      }
+      .card {
+        border: 1px solid var(--ink);
+        border-radius: 10px;
+        padding: 32px;
+        background: #fff;
+        box-shadow: 8px 8px 0 var(--orange);
+      }
+      .card h2 {
+        font-size: 28px;
+        margin-bottom: 6px;
+      }
+      .card p.sub {
+        color: var(--mute);
+        font-size: 14px;
+        margin-bottom: 22px;
+      }
+      label.f {
+        display: block;
+        margin-bottom: 16px;
+      }
+      label.f span {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--mute);
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"] {
+        width: 100%;
+        padding: 13px 14px;
+        border: 1.5px solid var(--line);
+        border-radius: 6px;
+        font:
+          500 16px "Inter",
+          sans-serif;
+        color: var(--ink);
+        background: #fff;
+        outline: none;
+        transition: 0.15s;
+      }
+      input:focus {
+        border-color: var(--orange);
+        box-shadow: 0 0 0 3px #e8451e22;
+      }
+      .err {
+        color: var(--red);
+        font-size: 13px;
+        margin: -4px 0 12px;
+        min-height: 0;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background: var(--orange);
+        color: #fff;
+        border: 2px solid var(--orange);
+        padding: 14px 26px;
+        border-radius: 6px;
+        font:
+          800 14px "Archivo",
+          sans-serif;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 0.15s;
+      }
+      .btn:hover {
+        background: var(--orange-d);
+        border-color: var(--orange-d);
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .btn.ghost {
+        background: #fff;
+        color: var(--ink);
+        border-color: var(--ink);
+      }
+      .btn.ghost:hover {
+        background: var(--ink);
+        color: #fff;
+      }
+      .btn.block {
+        width: 100%;
+      }
+
+      /* test */
+      .tabs {
+        background: #fff;
+        border-bottom: 1px solid var(--line);
+        position: sticky;
+        top: 68px;
+        z-index: 15;
+      }
+      .tabs .wrap {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        padding-top: 10px;
+        padding-bottom: 0;
+      }
+      .tab {
+        flex: 0 0 auto;
+        background: none;
+        border: none;
+        border-bottom: 3px solid transparent;
+        padding: 10px 16px 12px;
+        cursor: pointer;
+        color: var(--mute);
+        font:
+          700 14px "Archivo",
+          sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        white-space: nowrap;
+      }
+      .tab small {
+        font:
+          500 11px "JetBrains Mono",
+          monospace;
+        margin-left: 8px;
+        letter-spacing: 0.05em;
+      }
+      .tab.on {
+        color: var(--ink);
+        border-bottom-color: var(--orange);
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 1fr 260px;
+        gap: 40px;
+        padding: 36px 24px 90px;
+        align-items: start;
+      }
+      .sec-head {
+        display: flex;
+        align-items: baseline;
+        gap: 18px;
+        margin-bottom: 28px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--ink);
+      }
+      .sec-head h2 {
+        font-size: clamp(30px, 4.5vw, 52px);
+      }
+      .sec-head .mono {
+        color: var(--orange);
+      }
+      .q {
+        padding: 26px 0;
+        border-bottom: 1px solid var(--line);
+        scroll-margin-top: 150px;
+      }
+      .q .no {
+        color: var(--orange);
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .q .no a {
+        color: var(--mute);
+        cursor: pointer;
+        text-decoration: underline;
+        text-transform: none;
+        letter-spacing: 0;
+        font-size: 12px;
+      }
+      .q h3 {
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        font-size: 18px;
+        letter-spacing: 0;
+        line-height: 1.45;
+        margin-bottom: 16px;
+      }
+      .opt {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        padding: 13px 16px;
+        border: 1.5px solid var(--line);
+        border-radius: 8px;
+        margin-bottom: 9px;
+        cursor: pointer;
+        transition: 0.12s;
+        background: #fff;
+      }
+      .opt:hover {
+        border-color: var(--ink);
+      }
+      .opt input {
+        display: none;
+      }
+      .opt .k {
+        flex: 0 0 auto;
+        width: 28px;
+        height: 28px;
+        border: 1.5px solid var(--ink);
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font:
+          700 12px "JetBrains Mono",
+          monospace;
+      }
+      .opt .t {
+        padding-top: 2px;
+        font-size: 16px;
+      }
+      .opt.sel {
+        border-color: var(--ink);
+        background: var(--soft);
+      }
+      .opt.sel .k {
+        background: var(--orange);
+        border-color: var(--orange);
+        color: #fff;
+      }
+      .side {
+        position: sticky;
+        top: 160px;
+      }
+      .side h4 {
+        margin-bottom: 14px;
+        color: var(--mute);
+      }
+      .pal {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 7px;
+      }
+      .pal button {
+        aspect-ratio: 1;
+        border: 1.5px solid var(--line);
+        background: #fff;
+        border-radius: 6px;
+        font:
+          600 12px "JetBrains Mono",
+          monospace;
+        cursor: pointer;
+        color: var(--mute);
+      }
+      .pal button:hover {
+        border-color: var(--ink);
+      }
+      .pal button.ans {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: #fff;
+      }
+      .legend {
+        margin-top: 16px;
+        font-size: 12px;
+        color: var(--mute);
+        display: flex;
+        gap: 14px;
+      }
+      .legend i {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        margin-right: 6px;
+        vertical-align: -1px;
+      }
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 34px;
+        flex-wrap: wrap;
+      }
+
+      /* modal */
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: #0009;
+        z-index: 50;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+      }
+      .modal .box {
+        background: #fff;
+        border-radius: 10px;
+        padding: 32px;
+        max-width: 460px;
+        width: 100%;
+        border: 1px solid var(--ink);
+        box-shadow: 8px 8px 0 var(--orange);
+      }
+      .modal h3 {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+      .modal p {
+        color: #3d3d3d;
+        margin-bottom: 22px;
+      }
+      .modal .row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      /* result */
+      .res {
+        padding: 56px 0 90px;
+      }
+      .res h1 {
+        font-size: clamp(40px, 6vw, 80px);
+        margin-bottom: 8px;
+      }
+      .score {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        margin: 26px 0 8px;
+      }
+      .score b {
+        font:
+          900 clamp(64px, 10vw, 120px)/1 "Archivo",
+          sans-serif;
+        color: var(--orange);
+      }
+      .score span {
+        font:
+          700 28px "Archivo",
+          sans-serif;
+        color: var(--mute);
+      }
+      table.st {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 26px 0;
+        font-size: 15px;
+      }
+      table.st th {
+        text-align: left;
+        color: var(--mute);
+        font:
+          500 12px "JetBrains Mono",
+          monospace;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 10px 8px;
+        border-bottom: 1px solid var(--ink);
+      }
+      table.st td {
+        padding: 14px 8px;
+        border-bottom: 1px solid var(--line);
+      }
+      .status {
+        margin: 18px 0;
+        padding: 12px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        border: 1px solid var(--line);
+        background: var(--soft);
+      }
+      .status.ok {
+        border-color: var(--green);
+        color: var(--green);
+        background: #f0faf4;
+      }
+      .status.bad {
+        border-color: var(--red);
+        color: var(--red);
+        background: #fff4f2;
+      }
+      .acts {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+      }
+
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 36px;
+          padding-top: 36px;
+        }
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .side {
+          position: static;
+          order: -1;
+        }
+        .pal {
+          grid-template-columns: repeat(8, 1fr);
+        }
+        .prog {
+          display: none;
+        }
+        .timer .t {
+          font-size: 18px;
+          min-width: 108px;
+        }
+        .logo {
+          font-size: 21px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============ START ============ -->
+    <section id="s-start">
+      <div class="top">
+        <div class="wrap">
+          <div class="logo">ABOVE<b>FL360</b></div>
+          <div class="mono prog">DGCA Ground · Meteorology</div>
+        </div>
+      </div>
+      <div class="wrap hero">
+        <div>
+          <div class="mono eyebrow">The Test</div>
+          <h1>METEOROLOGY<br />TEST.</h1>
+          <p class="lead">
+            Four sections. One sitting. Answer every question, submit, and
+            download your full answer sheet as a PDF.
+          </p>
+          <div class="rules" id="rules"></div>
+        </div>
+        <div class="card">
+          <h2>Your details</h2>
+          <p class="sub">The timer starts as soon as you press Start.</p>
+          <label class="f"
+            ><span class="mono">Full name</span
+            ><input type="text" id="in-name" autocomplete="name"
+          /></label>
+          <label class="f"
+            ><span class="mono">Email address</span
+            ><input type="email" id="in-email" autocomplete="email"
+          /></label>
+          <label class="f"
+            ><span class="mono">Phone number</span
+            ><input
+              type="tel"
+              id="in-phone"
+              autocomplete="tel"
+              placeholder="+91 98765 43210"
+          /></label>
+          <div class="err" id="start-err"></div>
+          <button class="btn block" id="btn-start">Start test →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TEST ============ -->
+    <section id="s-test" class="hidden">
+      <div class="top">
+        <div class="wrap">
+          <div class="logo">ABOVE<b>FL360</b></div>
+          <div class="timer" id="timer">
+            <div class="mono prog">
+              Answered <b id="p-ans">0</b> / <b id="p-tot">0</b>
+            </div>
+            <div class="t" id="t-val">02:00:00</div>
+          </div>
+        </div>
+      </div>
+      <div class="tabs"><div class="wrap" id="tabs"></div></div>
+      <div class="wrap layout">
+        <main id="main"></main>
+        <aside class="side">
+          <h4 class="mono">Question palette</h4>
+          <div class="pal" id="pal"></div>
+          <div class="legend">
+            <span><i style="background: var(--ink)"></i>Answered</span
+            ><span><i style="border: 1.5px solid var(--line)"></i>Pending</span>
+          </div>
+          <button
+            class="btn block"
+            id="btn-submit-side"
+            style="margin-top: 26px"
+          >
+            Submit test
+          </button>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ RESULT ============ -->
+    <section id="s-result" class="hidden">
+      <div class="top">
+        <div class="wrap">
+          <div class="logo">ABOVE<b>FL360</b></div>
+          <div class="mono prog">Answer sheet</div>
+        </div>
+      </div>
+      <div class="wrap res">
+        <div class="mono eyebrow" id="r-eyebrow">Submitted</div>
+        <h1 id="r-name">DONE.</h1>
+        <div class="score"><b id="r-score">0</b><span id="r-of">/ 0</span></div>
+        <div class="mono prog" id="r-meta"></div>
+        <table class="st" id="r-table"></table>
+        <div class="status" id="r-status">Saving your answers…</div>
+        <div class="acts">
+          <button class="btn" id="btn-pdf">Download answer sheet (PDF)</button>
+          <button class="btn ghost hidden" id="btn-retry">Retry saving</button>
+          <button class="btn ghost" id="btn-new">Start a new attempt</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="modal hidden" id="modal">
+      <div class="box">
+        <h3>Submit test?</h3>
+        <p id="modal-msg"></p>
+        <div class="row">
+          <button class="btn" id="m-yes">Yes, submit</button
+          ><button class="btn ghost" id="m-no">Keep working</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Edit / append questions here. answer = letter of the correct option (A-D).
+      window.SECTIONS = [
+        {
+          id: "atmosphere",
+          name: "Atmosphere",
+          questions: [
+            {
+              q: "In actual atmosphere the lapse rate could:",
+              options: [
+                "Assume any value",
+                "Fall up to 8 km",
+                "Rise up to 50 km",
+              ],
+              answer: "A",
+            },
+            {
+              q: "Troposphere is generally:",
+              options: ["Stable", "Unstable", "Neutral"],
+              answer: "B",
+            },
+            {
+              q: "In actual atmosphere temp at 19 km is -60°C. Find the ISA deviation?",
+              options: ["-4.5°C", "-05.5°C", "-03.5°C"],
+              answer: "C",
+            },
+            {
+              q: "Lapse rate in the troposphere is produced by ... and in the stratosphere by:",
+              options: [
+                "Evaporation; condensation",
+                "Rising air; solar radiation",
+                "Terrestrial radiation; solar radiation",
+                "Solar radiation; convection",
+              ],
+              answer: "B",
+            },
+            {
+              q: "By volume, the approximate ratio of O2 to N2 in the atmosphere is:",
+              options: ["1:3", "1:4", "1:5"],
+              answer: "B",
+            },
+            {
+              q: "Above 8 km the lower temperatures are over:",
+              options: ["Equator", "Mid Latitudes", "Poles"],
+              answer: "A",
+            },
+            {
+              q: "By volume, the proportion of CO2 in the atmosphere is:",
+              options: ["3%", "0.3%", "0.03%"],
+              answer: "C",
+            },
+            {
+              q: "The rate of fall of temperatures with height, called:",
+              options: ["Isothermal rate", "Inversion Rate", "Lapse Rate"],
+              answer: "C",
+            },
+            {
+              q: "Mother of Pearl clouds occur in:",
+              options: ["Mesosphere", "Thermosphere", "Stratosphere"],
+              answer: "C",
+            },
+            {
+              q: "Heat transfer in the atmosphere is maximum due to:",
+              options: [
+                "Convection",
+                "Radiation",
+                "Sensible heat",
+                "Latent heat",
+              ],
+              answer: "D",
+            },
+            {
+              q: "Additional oxygen is needed while flying above:",
+              options: ["5000 ft", "7000 ft", "10000 ft"],
+              answer: "C",
+            },
+            {
+              q: "Most of atmospheric mass is contained in:",
+              options: ["Troposphere", "Stratosphere", "Heterosphere"],
+              answer: "A",
+            },
+            {
+              q: "Maximum concentration of ozone is at a height of:",
+              options: ["10-15 km", "20-25 km", "30-35 km"],
+              answer: "B",
+            },
+            {
+              q: "Stratosphere extends from Tropopause to:",
+              options: ["50 km", "60 km", "40 km"],
+              answer: "A",
+            },
+            {
+              q: "In jet standard atmosphere the Lapse Rate is:",
+              options: ["2°C/1000 ft", "2°C/km", "5°C/km"],
+              answer: "A",
+            },
+            {
+              q: "Half of the atmospheric air mass is contained below:",
+              options: ["20,000 ft", "15,000 ft", "10,000 ft"],
+              answer: "A",
+            },
+            {
+              q: "Pressure at MSL is 1002.25 hPa. Find the ISA deviation. (Hint: Actual – ISA)",
+              options: ["-11 hPa", "10 hPa", "12 hPa"],
+              answer: "A",
+            },
+            {
+              q: "CO2 and H2O are also called:",
+              options: [
+                "Green House Gases",
+                "Rare Earth Gases",
+                "None of the Above",
+              ],
+              answer: "A",
+            },
+            {
+              q: "Negative lapse rate of temperature is:",
+              options: [
+                "Isothermal rate",
+                "Temperature rise with lowering height",
+                "Temperature rise with height",
+                "Temperature fall with height",
+              ],
+              answer: "C",
+            },
+            {
+              q: "Noctilucent clouds occur in:",
+              options: ["Thermosphere", "Mesosphere", "Stratosphere"],
+              answer: "B",
+            },
+            {
+              q: "Nacreous clouds occur in:",
+              options: ["Thermosphere", "Mesosphere", "Upper Stratosphere"],
+              answer: "C",
+            },
+            {
+              q: "In ICAO ISA the atmosphere is assumed to be isothermal:",
+              options: [
+                "In stratosphere",
+                "11 to 16 km",
+                "11 to 20 km",
+                "11 to 32 km",
+              ],
+              answer: "C",
+            },
+            {
+              q: "The middle atmosphere layer with temperature inversion and stability:",
+              options: ["Troposphere", "Tropopause", "Stratosphere"],
+              answer: "C",
+            },
+            {
+              q: "The temperature at 80 km is:",
+              options: ["173 K", "100 K", "-137°C"],
+              answer: "A",
+            },
+            {
+              q: "The atmosphere up to 80 km has a nearly similar composition and is called the Homosphere. Its uniform composition is due to:",
+              options: [
+                "Pressure",
+                "Gravitation of earth",
+                "Mixing due to turbulence",
+              ],
+              answer: "B",
+            },
+            {
+              q: "There is reversal of temperature in the atmosphere at 8 km because:",
+              options: [
+                "Lapse rate at poles is always higher than at equator",
+                "Lapse rate at equator is always higher than at poles",
+                "Lapse rate at equator is the same as at poles even above the poles",
+                "Lapse rate reverses at poles and becomes negative",
+              ],
+              answer: "D",
+            },
+            {
+              q: "Lowest layer of atmosphere is:",
+              options: ["Troposphere", "Tropopause", "Stratosphere"],
+              answer: "A",
+            },
+            {
+              q: "In ISA atmosphere the tropopause occurs at a height of:",
+              options: ["8-10 km", "11 km", "16-18 km"],
+              answer: "B",
+            },
+            {
+              q: "Most of the water vapour in the atmosphere is confined to:",
+              options: [
+                "Stratosphere",
+                "30,000 ft",
+                "Mid troposphere",
+                "Lower troposphere",
+              ],
+              answer: "B",
+            },
+            {
+              q: "By weight, approximate ratio of O2 to N2 in the atmosphere is:",
+              options: ["1:3", "1:4", "1:5"],
+              answer: "A",
+            },
+            {
+              q: "CO2 and H2O keep the atmosphere:",
+              options: ["Warm", "Cold", "Have no effect"],
+              answer: "A",
+            },
+            {
+              q: "Height of Tropopause at equator is:",
+              options: ["8-10 km", "16-18 km", "14 km"],
+              answer: "B",
+            },
+            {
+              q: "Height of Tropopause at Poles is:",
+              options: ["12 km", "13 km", "08 km"],
+              answer: "C",
+            },
+            {
+              q: "Height of tropopause:",
+              options: [
+                "Is constant",
+                "Varies with altitude",
+                "Varies with latitude",
+              ],
+              answer: "C",
+            },
+            {
+              q: "One of the characteristics of our atmosphere is:",
+              options: [
+                "Poor conductor of heat and electricity",
+                "Equator is warmer than poles above 10 km",
+                "Lapse rate in the stratosphere is positive",
+                "Density is constant above 8 km",
+              ],
+              answer: "A",
+            },
+            {
+              q: "Temperature at 2 km is 05°C. What is ISA deviation? (Hint: Actual – ISA)",
+              options: ["-05°C", "-02°C", "03°C"],
+              answer: "C",
+            },
+            {
+              q: "Higher the surface temperature, the tropopause would be:",
+              options: ["Higher", "Lower", "Same"],
+              answer: "A",
+            },
+            {
+              q: "Atmosphere is heated by:",
+              options: [
+                "Solar Radiation",
+                "Heat from earth surface",
+                "From above",
+              ],
+              answer: "B",
+            },
+            {
+              q: "In ISA, the mean sea level temperature is:",
+              options: ["15°C", "10°C", "25°C"],
+              answer: "A",
+            },
+            {
+              q: "Stratosphere is:",
+              options: ["Unstable", "Neutral", "Stable"],
+              answer: "C",
+            },
+          ],
+        },
+        {
+          id: "pressure",
+          name: "Atmospheric Pressure",
+          questions: [
+            {
+              q: "Two aircraft flying at same indicated altitude with altimeters set to 1013.2 hPa. One is flying over cold air mass and other over warm air mass. Which of the two has greater altitude?",
+              options: [
+                "Ac flying over warm air mass",
+                "Ac flying over cold air mass",
+              ],
+              answer: "A",
+            },
+            {
+              q: "700 hPa in ISA corresponds to the Flight level:",
+              options: ["20,000 ft", "10,000 ft", "18,000 ft"],
+              answer: "B",
+            },
+            {
+              q: "A contour of 9160 m can be expected on a constant pressure chart for pressure level:",
+              options: ["500 hPa", "400 hPa", "300 hPa", "200 hPa"],
+              answer: "C",
+            },
+            {
+              q: "Lines drawn through places of equal pressure are known as:",
+              options: ["Isobars", "Isotherms", "Isogonal", "Isoclinal"],
+              answer: "A",
+            },
+            {
+              q: "An increase of 1000 ft at MSL is associated with decrease of pressure of:",
+              options: ["100 hPa", "1000 hPa", "3 hPa", "33 hPa"],
+              answer: "D",
+            },
+            {
+              q: "300 hPa in ISA corresponds to the level:",
+              options: ["20,000 ft", "30,000 ft", "35,000 ft"],
+              answer: "B",
+            },
+            {
+              q: "In contour chart of 300 hPa, isohypse (contours) are drawn at interval of:",
+              options: ["20 gpm", "40 gpm", "60 gpm", "80 gpm"],
+              answer: "D",
+            },
+            {
+              q: "Which of the following would cause true altitude to increase when altimeter indicates constant altitude?",
+              options: ["Warm/Low", "Cold/Low", "Hot/High", "Cool/Low"],
+              answer: "C",
+            },
+            {
+              q: "The rate of fall of pressure with height in a warm air mass compared to cold air mass will be:",
+              options: ["Same", "More", "Less"],
+              answer: "C",
+            },
+            {
+              q: "QNH of an aerodrome 160 m AMSL is 1005 hPa. QFE? Assuming 1 hPa = 8 m:",
+              options: ["1010 hPa", "985 hPa", "1005 hPa", "990 hPa"],
+              answer: "B",
+            },
+            {
+              q: "In constant pressure chart of 500 hPa, isohypse are drawn at interval of:",
+              options: ["20 gpm", "40 gpm", "60 gpm", "80 gpm"],
+              answer: "B",
+            },
+            {
+              q: "Poor visibility is associated with:",
+              options: ["High", "Low", "Trough"],
+              answer: "A",
+            },
+            {
+              q: "An aerodrome is at the mean sea level. Its QNH is 1014.0 hPa. Its QFE will be:",
+              options: [
+                "1014.0 hPa",
+                "1013.25",
+                "Difficult to tell",
+                "More than QNH",
+              ],
+              answer: "A",
+            },
+            {
+              q: "Steep pressure gradient would mean:",
+              options: [
+                "Contours far apart, weak wind",
+                "Contours far apart, strong wind",
+                "Isobars far apart and temperature low",
+                "Isobars closely packed and strong wind",
+              ],
+              answer: "D",
+            },
+            {
+              q: "24,000 ft height in ISA corresponds to pressure level:",
+              options: ["400 hPa", "500 hPa", "300 hPa"],
+              answer: "A",
+            },
+            {
+              q: "Fall of pressure with height is more rapid in:",
+              options: ["Cold areas", "Warm areas", "Humid areas"],
+              answer: "A",
+            },
+            {
+              q: "Flying from Low to High an altimeter would read:",
+              options: ["Over", "Under", "Constant"],
+              answer: "B",
+            },
+            {
+              q: "The relationship between height and pressure is made use in construction of:",
+              options: ["Altimeter", "ASI", "VSI"],
+              answer: "A",
+            },
+            {
+              q: "18,000 ft height in ISA corresponds to the pressure level:",
+              options: ["700 hPa", "200 hPa", "500 hPa"],
+              answer: "C",
+            },
+            {
+              q: "Bad weather and better visibility is associated with:",
+              options: ["High", "Low", "Col"],
+              answer: "B",
+            },
+            {
+              q: "Isallobars are lines of equal:",
+              options: [
+                "Pressure",
+                "Temperature Tendency",
+                "Pressure Tendency",
+              ],
+              answer: "C",
+            },
+            {
+              q: "Winds in a low pressure:",
+              options: ["Converge", "Diverge", "Go straight"],
+              answer: "A",
+            },
+            {
+              q: "Which is true?",
+              options: [
+                "Trough has frontal characteristics",
+                "At trough winds back in N-hemisphere",
+                "At trough winds veer in N-hemisphere",
+              ],
+              answer: "B",
+            },
+            {
+              q: "In a high pressure area winds are:",
+              options: ["Normal", "Strong", "Weak"],
+              answer: "C",
+            },
+            {
+              q: "A region between two Lows and Two Highs is:",
+              options: ["Depression", "Secondary Low", "Col"],
+              answer: "C",
+            },
+            {
+              q: "An aircraft is gaining altitude, in spite of altimeter reading constant altitude. Why?",
+              options: [
+                "Standard pressure has risen",
+                "Flying towards High",
+                "Flying towards Low",
+                "Temperature has decreased",
+              ],
+              answer: "B",
+            },
+            {
+              q: "Semi diurnal pressure changes are most pronounced in:",
+              options: ["Polar region", "Middle latitudes", "Tropics"],
+              answer: "C",
+            },
+            {
+              q: "Atmospheric pressure is due to:",
+              options: ["Wind", "Temperature", "Gravity", "Density"],
+              answer: "D",
+            },
+            {
+              q: "Altimeter of a/c on ground reads aerodrome elevation; its sub-scale is set to:",
+              options: ["QNH", "QNE", "QFF", "QFE"],
+              answer: "A",
+            },
+            {
+              q: "What type of inversion occurs when a stable layer lies in a high pressure area?",
+              options: ["Negative", "Radiation", "Subsidence", "Airmass"],
+              answer: "C",
+            },
+            {
+              q: "On either side, perpendicular to the .......... pressures rise:",
+              options: ["Trough", "Ridge", "Low"],
+              answer: "A",
+            },
+            {
+              q: "In the Southern Hemisphere, around a Low Pressure Area wind blows:",
+              options: [
+                "In clockwise direction",
+                "In anticlockwise direction",
+                "Across isobars towards the centre",
+              ],
+              answer: "A",
+            },
+            {
+              q: "Flying from Delhi to Kolkata at constant indicated altitude but experiencing drift to Starboard. The actual altitude will be (vis-à-vis indicated altitude):",
+              options: ["Lower", "Same", "Higher"],
+              answer: "A",
+            },
+            {
+              q: "Altimeter always measures the height of aircraft above:",
+              options: [
+                "MSL",
+                "Datum of 1013.2 hPa",
+                "Datum at which its sub-scale is set",
+              ],
+              answer: "C",
+            },
+            {
+              q: "850 hPa in ISA corresponds to the height:",
+              options: ["7,000 ft", "5,000 ft", "10,000 ft"],
+              answer: "B",
+            },
+            {
+              q: "40,000 ft height in ISA approximately corresponds to pressure level:",
+              options: ["400 hPa", "500 hPa", "200 hPa"],
+              answer: "C",
+            },
+            {
+              q: "200 hPa in ISA corresponds to the level:",
+              options: ["20,000 ft", "30,000 ft", "40,000 ft"],
+              answer: "C",
+            },
+            {
+              q: "Instrument for recording pressure is called:",
+              options: ["Anemograph", "Barometer", "Hygrograph"],
+              answer: "B",
+            },
+            {
+              q: "Low pressure is associated with:",
+              options: ["Good Weather", "Bad Weather", "None"],
+              answer: "B",
+            },
+          ],
+        },
+        {
+          id: "temperature",
+          name: "Temperature",
+          questions: [
+            {
+              q: "Diurnal variation of temperature over ocean is",
+              options: ["More than land", "Above 3°C", "Less than 1°C"],
+              answer: "C",
+            },
+            {
+              q: "Diurnal variation of temperature is least on a day when it is",
+              options: ["Clear", "Partly cloudy", "Cloudy", "Overcast"],
+              answer: "D",
+            },
+            {
+              q: "Rise in temperature of a surface is proportional to its specific heat",
+              options: ["Directly", "Inversely"],
+              answer: "B",
+            },
+            {
+              q: "The solar radiation consists of about 46 %.....",
+              options: ["UV", "IR", "Visible"],
+              answer: "B",
+            },
+            {
+              q: "Surface Temperature is recorded at a height of .......... above ground",
+              options: ["1.5 m", "1.25 m", "2 m"],
+              answer: "B",
+            },
+            {
+              q: "During Day the ambient temperature is .......... than ground",
+              options: ["Lower", "Higher", "Same"],
+              answer: "A",
+            },
+            {
+              q: "Warmer the earth.......... will be the Nocturnal radiation",
+              options: ["Intense", "Weaker", "Moderate"],
+              answer: "A",
+            },
+            {
+              q: "Heat is the ...... of the KE of all the molecules and atoms of a substance",
+              options: ["Sum total", "Average"],
+              answer: "A",
+            },
+            {
+              q: "The wavelength of most intense radiation is inversely proportional to its",
+              options: ["Absolute temperature", "Humidity", "Albedo"],
+              answer: "A",
+            },
+            {
+              q: "Convert 68°F into Kelvin temperature",
+              options: ["233 K", "283 K", "294 K", "293 K"],
+              answer: "D",
+            },
+            {
+              q: "Air is a bad conductor of heat. A parcel of air can therefore be regarded as insulated from the environment",
+              options: ["False", "True"],
+              answer: "B",
+            },
+            {
+              q: "A clear and calm night is cooler than a cloudy night, because nocturnal radiation",
+              options: [
+                "Escape through cloud",
+                "Are partly radiated back by clouds to earth",
+                "Are fully absorbed by H2O",
+                "Are fully prevented by clouds to escape",
+              ],
+              answer: "B",
+            },
+            {
+              q: "Boiling point of water is (in Kelvin)",
+              options: ["373 K", "273 K", "173 K", "312 K"],
+              answer: "A",
+            },
+            {
+              q: "Freezing point of water is (in Kelvin)",
+              options: ["173 K", "273 K", "373 K", "473 K"],
+              answer: "B",
+            },
+            {
+              q: "Specific heat of land is .......... than that of water",
+              options: ["Lower", "Same", "Higher"],
+              answer: "A",
+            },
+            {
+              q: "Which surface will cause higher diurnal variation",
+              options: ["Forest", "Desert", "Water", "Snow"],
+              answer: "B",
+            },
+            {
+              q: "Boiling point of water is",
+              options: ["100°F", "112°F", "212°F", "312°F"],
+              answer: "C",
+            },
+            {
+              q: "If temperature does not change in a layer with height on a day, indicates",
+              options: [
+                "Isothermal layer",
+                "Inversion",
+                "Instability",
+                "Uniform Lapse Rate",
+              ],
+              answer: "A",
+            },
+            {
+              q: "The flow of heat from earth surface is 77% by",
+              options: ["Sensible Heat", "Latent Heat"],
+              answer: "B",
+            },
+            {
+              q: "The liquid used in Minimum Thermometer is",
+              options: ["Mercury", "Alcohol", "Spirit"],
+              answer: "B",
+            },
+            {
+              q: "Amount of Solar radiation received per unit area is",
+              options: ["Insolation", "Convection", "Radiation"],
+              answer: "A",
+            },
+            {
+              q: "On a clear day the amount of solar radiation received by earth surface is",
+              options: ["3/4", "30%", "5/6"],
+              answer: "C",
+            },
+            {
+              q: "Snow surface reflects about .......... % of solar radiation.",
+              options: ["75%", "80%", "90%"],
+              answer: "B",
+            },
+            {
+              q: "Intense radiation are emitted by",
+              options: ["Hot bodies", "Cold bodies", "Stars"],
+              answer: "A",
+            },
+            {
+              q: "Freezing point of water is",
+              options: ["0°F", "12°F", "22°F", "32°F"],
+              answer: "D",
+            },
+            {
+              q: "At a coastal station the diurnal variation of temperature depends on",
+              options: ["Wind direction", "Wind speed", "Radiation"],
+              answer: "A",
+            },
+            {
+              q: "Solar radiation received by the earth is",
+              options: ["Long Wave", "Albedo", "Shortwave"],
+              answer: "C",
+            },
+            {
+              q: "Water vapour is transparent to terrestrial radiation",
+              options: ["Completely", "Partially", "Indifferent"],
+              answer: "B",
+            },
+            {
+              q: "ALBEDO is",
+              options: [
+                "Radiation received by earth",
+                "Amount of heat",
+                "Reflecting power of earth",
+              ],
+              answer: "C",
+            },
+            {
+              q: "Diurnal variation of temperature is greatest when wind is",
+              options: ["Calm", "Light", "Strong"],
+              answer: "A",
+            },
+            {
+              q: "Hot bodies (like sun) radiate",
+              options: ["Short Waves", "Long Waves", "Both"],
+              answer: "A",
+            },
+            {
+              q: "The door of Stevenson's screen should open",
+              options: ["Opposite to sun", "Into sun", "Any direction"],
+              answer: "A",
+            },
+            {
+              q: "-40°C = -40°F",
+              options: ["True", "False"],
+              answer: "A",
+            },
+            {
+              q: "Diurnal variation of temperature is maximum over",
+              options: ["Forest", "Ocean", "Land"],
+              answer: "C",
+            },
+            {
+              q: "Minimum temperature is reached at",
+              options: ["Sunrise", "Midnight", "½ - 1 hour after dawn"],
+              answer: "C",
+            },
+            {
+              q: "An air parcel is lifted till it gets saturated. The temperature attained by it is called",
+              options: ["Potential temperature", "Dew Point", "Wet bulb"],
+              answer: "B",
+            },
+            {
+              q: "Higher the temperature .......... would be the wavelength of emitted radiation",
+              options: ["Longer", "Shorter"],
+              answer: "B",
+            },
+            {
+              q: "Cloudy nights are",
+              options: ["Cold", "Normal", "Warm"],
+              answer: "C",
+            },
+            {
+              q: "The total energy radiated by a black body is proportional to its temperature (T)",
+              options: ["T²", "T³", "T⁴"],
+              answer: "C",
+            },
+          ],
+        },
+        {
+          id: "density",
+          name: "Air Density",
+          questions: [
+            {
+              q: "The altitude in ISA at which air density is the same as the observed density is",
+              options: ["Density Altitude", "ISA Density", "Real Density"],
+              answer: "A",
+            },
+            {
+              q: "For every 1°C change in temperature, density altitude differs from pressure altitude by",
+              options: ["33 ft", "100 ft", "120 ft", "210 ft"],
+              answer: "C",
+            },
+            {
+              q: "Higher density altitude means .......... density",
+              options: ["Higher", "Lower", "Same"],
+              answer: "B",
+            },
+            {
+              q: "Air is less denser in",
+              options: [
+                "High Altitudes",
+                "Warm Air",
+                "High humidity",
+                "All these",
+              ],
+              answer: "D",
+            },
+            {
+              q: "Temperature being constant, if pressure increases the density altitude",
+              options: ["Increases", "Lowers", "Remains the same"],
+              answer: "B",
+            },
+            {
+              q: "For given pressure and temperature moist air has density",
+              options: ["Higher", "Lower", "Same"],
+              answer: "B",
+            },
+            {
+              q: "Density altitude may be defined as",
+              options: [
+                "The altitude in ISA at which the prevailing pressure occurs",
+                "The altitude in ISA at which the prevailing density occurs",
+                "The altitude in actual atmosphere at which the prevailing density occurs",
+              ],
+              answer: "B",
+            },
+            {
+              q: "Above 8 km density is .......... at poles than at equator",
+              options: ["Higher", "Lower", "Same"],
+              answer: "B",
+            },
+            {
+              q: "Density is .......... at poles than equator",
+              options: ["Higher", "Lower", "Same"],
+              answer: "A",
+            },
+            {
+              q: "Density is usually expressed as",
+              options: ["Kg/sq m", "Kg/cu m", "N/sq m"],
+              answer: "B",
+            },
+          ],
+        },
+      ];
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+      /* ===== SUPABASE SQL (run once in Supabase > SQL Editor) =====
+-- AboveFL360 test: run once in Supabase > SQL Editor
+
+create table if not exists public.test_attempts (
+  id             uuid primary key,
+  name           text not null,
+  email          text not null,
+  phone          text not null,
+  started_at     timestamptz not null default now(),
+  submitted_at   timestamptz,
+  auto_submitted boolean not null default false,
+  time_taken_sec int,
+  score          int,
+  total          int,
+  attempted      int
+);
+
+create table if not exists public.test_answers (
+  id              bigint generated always as identity primary key,
+  attempt_id      uuid not null references public.test_attempts(id) on delete cascade,
+  section         text not null,
+  q_no            int  not null,
+  question        text not null,
+  options         jsonb not null,      -- {"A":"...","B":"..."}
+  selected_option text,                -- null = not attempted
+  selected_text   text,
+  correct_option  text not null,
+  correct_text    text,
+  is_correct      boolean not null,
+  unique (attempt_id, section, q_no)
+);
+
+alter table public.test_attempts enable row level security;
+alter table public.test_answers  enable row level security;
+
+-- Browser (anon key) may only INSERT a fresh attempt row. No read / update / delete.
+drop policy if exists "anon can start attempt" on public.test_attempts;
+create policy "anon can start attempt" on public.test_attempts
+  for insert to anon
+  with check (submitted_at is null and score is null);
+
+-- Final submission goes through this function (answers table has no anon policy).
+create or replace function public.submit_attempt(
+  p_id uuid, p_name text, p_email text, p_phone text,
+  p_started_at timestamptz, p_auto boolean, p_time_taken int,
+  p_score int, p_total int, p_attempted int, p_answers jsonb
+) returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into test_attempts (id, name, email, phone, started_at)
+  values (p_id, p_name, p_email, p_phone, p_started_at)
+  on conflict (id) do nothing;
+
+  update test_attempts
+     set submitted_at = now(), auto_submitted = p_auto, time_taken_sec = p_time_taken,
+         score = p_score, total = p_total, attempted = p_attempted
+   where id = p_id and submitted_at is null;
+
+  if not found then return; end if;   -- already submitted, ignore duplicates
+
+  insert into test_answers
+    (attempt_id, section, q_no, question, options, selected_option, selected_text,
+     correct_option, correct_text, is_correct)
+  select p_id, x.section, x.q_no, x.question, x.options, x.selected_option, x.selected_text,
+         x.correct_option, x.correct_text, x.is_correct
+    from jsonb_to_recordset(p_answers) as x(
+      section text, q_no int, question text, options jsonb, selected_option text,
+      selected_text text, correct_option text, correct_text text, is_correct boolean);
+end;
+$$;
+
+revoke all on function public.submit_attempt(uuid,text,text,text,timestamptz,boolean,int,int,int,int,jsonb) from public;
+grant execute on function public.submit_attempt(uuid,text,text,text,timestamptz,boolean,int,int,int,int,jsonb) to anon;
+
+===== END SQL ===== */
+
+      /* ================= CONFIG ================= */
+      const SUPABASE_URL = "https://nybseoomhggxqhtdwkig.supabase.co";
+      const SUPABASE_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55YnNlb29taGdneHFodGR3a2lnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MDc2MDY3NywiZXhwIjoyMTA2MzM2Njc3fQ.kmf9XxbjAFVA5CBM7VtRBe4Ve2eGhRo2QjNL-Jf5EuE"; // anon / publishable key only
+      const DURATION_SEC = 2 * 60 * 60; // 2 hours
+      /* ========================================== */
+
+      const KEY = "fl360_test_v1",
+        RKEY = "fl360_result_v1";
+      const $ = (id) => document.getElementById(id);
+      const esc = (s) =>
+        String(s).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      const SECS = window.SECTIONS;
+      const TOTAL = SECS.reduce((n, s) => n + s.questions.length, 0);
+      const LET = ["A", "B", "C", "D", "E", "F"];
+
+      let sb = null;
+      try {
+        if (!SUPABASE_URL.startsWith("PASTE"))
+          sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      } catch (e) {
+        console.error(e);
+      }
+
+      let state = null,
+        curSec = 0,
+        timerId = null,
+        submitting = false,
+        lastResult = null;
+
+      const load = (k) => {
+        try {
+          return JSON.parse(localStorage.getItem(k));
+        } catch {
+          return null;
+        }
+      };
+      const save = (k, v) => {
+        try {
+          localStorage.setItem(k, JSON.stringify(v));
+        } catch {}
+      };
+      const del = (k) => {
+        try {
+          localStorage.removeItem(k);
+        } catch {}
+      };
+      const uuid = () =>
+        crypto.randomUUID
+          ? crypto.randomUUID()
+          : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+              const r = (Math.random() * 16) | 0;
+              return (c === "x" ? r : (r & 3) | 8).toString(16);
+            });
+      const fmt = (s) => {
+        s = Math.max(0, Math.floor(s));
+        return [(s / 3600) | 0, ((s % 3600) / 60) | 0, s % 60]
+          .map((n) => String(n).padStart(2, "0"))
+          .join(":");
+      };
+      const show = (id) => {
+        ["s-start", "s-test", "s-result"].forEach((x) =>
+          $(x).classList.toggle("hidden", x !== id),
+        );
+        window.scrollTo(0, 0);
+      };
+
+      /* ---------- start screen ---------- */
+      $("rules").innerHTML = [
+        ["Sections", SECS.map((s) => s.name).join(" · ")],
+        ["Total questions", TOTAL],
+        ["Time allowed", "2 hours"],
+        ["Marking", "1 mark per correct answer, no negative marking"],
+      ]
+        .map(
+          ([a, b]) =>
+            `<div><span class="mono">${a}</span><span>${esc(b)}</span></div>`,
+        )
+        .join("");
+
+      $("btn-start").onclick = () => {
+        const name = $("in-name").value.trim(),
+          email = $("in-email").value.trim(),
+          phone = $("in-phone").value.trim();
+        const digits = phone.replace(/\D/g, "");
+        let e = "";
+        if (name.length < 2) e = "Please enter your full name.";
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))
+          e = "Please enter a valid email address.";
+        else if (
+          digits.length < 10 ||
+          digits.length > 15 ||
+          !/^[+\d\s\-()]+$/.test(phone)
+        )
+          e = "Please enter a valid phone number.";
+        $("start-err").textContent = e;
+        if (e) return;
+        state = {
+          attemptId: uuid(),
+          candidate: { name, email, phone },
+          startedAt: Date.now(),
+          answers: {},
+        };
+        save(KEY, state);
+        if (sb)
+          sb.from("test_attempts")
+            .insert({
+              id: state.attemptId,
+              name,
+              email,
+              phone,
+              started_at: new Date(state.startedAt).toISOString(),
+            })
+            .then((r) => {
+              if (r.error) console.warn("start insert failed", r.error.message);
+            });
+        beginTest();
+      };
+
+      /* ---------- test screen ---------- */
+      function beginTest() {
+        show("s-test");
+        $("p-tot").textContent = TOTAL;
+        curSec = 0;
+        renderTabs();
+        renderSection();
+        updateProgress();
+        clearInterval(timerId);
+        timerId = setInterval(tick, 500);
+        tick();
+      }
+      function remaining() {
+        return DURATION_SEC - (Date.now() - state.startedAt) / 1000;
+      }
+      function tick() {
+        const r = remaining();
+        $("t-val").textContent = fmt(r);
+        $("timer").classList.toggle("low", r <= 600);
+        if (r <= 0) {
+          clearInterval(timerId);
+          submit(true);
+        }
+      }
+      const ansKey = (si, qi) => si + ":" + qi;
+      const secAnswered = (si) =>
+        SECS[si].questions.filter((_, qi) => state.answers[ansKey(si, qi)])
+          .length;
+      const totalAnswered = () => Object.keys(state.answers).length;
+
+      function renderTabs() {
+        $("tabs").innerHTML = SECS.map(
+          (s, i) =>
+            `<button class="tab ${i === curSec ? "on" : ""}" data-i="${i}">${esc(s.name)}<small>${secAnswered(i)}/${s.questions.length}</small></button>`,
+        ).join("");
+        $("tabs")
+          .querySelectorAll(".tab")
+          .forEach(
+            (b) =>
+              (b.onclick = () => {
+                curSec = +b.dataset.i;
+                renderTabs();
+                renderSection();
+                window.scrollTo(0, 0);
+              }),
+          );
+      }
+      function renderSection() {
+        const s = SECS[curSec];
+        let h = `<div class="sec-head"><span class="mono">Section ${String(curSec + 1).padStart(2, "0")}</span><h2>${esc(s.name).toUpperCase()}</h2><span class="mono" style="color:var(--mute)">${s.questions.length} questions</span></div>`;
+        s.questions.forEach((q, qi) => {
+          const sel = state.answers[ansKey(curSec, qi)];
+          h += `<div class="q" id="q-${qi}"><div class="no mono"><span>Question ${qi + 1} of ${s.questions.length}</span>${sel ? `<a data-clear="${qi}">Clear</a>` : ""}</div><h3>${esc(q.q)}</h3>`;
+          q.options.forEach((o, oi) => {
+            const L = LET[oi];
+            h += `<label class="opt ${sel === L ? "sel" : ""}"><input type="radio" name="q${qi}" value="${L}" ${sel === L ? "checked" : ""} data-q="${qi}"><span class="k">${L}</span><span class="t">${esc(o)}</span></label>`;
+          });
+          h += `</div>`;
+        });
+        h += `<div class="nav">
+    ${curSec > 0 ? `<button class="btn ghost" id="b-prev">← ${esc(SECS[curSec - 1].name)}</button>` : "<span></span>"}
+    ${curSec < SECS.length - 1 ? `<button class="btn" id="b-next">${esc(SECS[curSec + 1].name)} →</button>` : `<button class="btn" id="b-sub">Submit test</button>`}
+  </div>`;
+        $("main").innerHTML = h;
+        $("main")
+          .querySelectorAll("input[type=radio]")
+          .forEach(
+            (inp) => (inp.onchange = () => choose(+inp.dataset.q, inp.value)),
+          );
+        $("main")
+          .querySelectorAll("[data-clear]")
+          .forEach((a) => (a.onclick = () => choose(+a.dataset.clear, null)));
+        if ($("b-prev"))
+          $("b-prev").onclick = () => {
+            curSec--;
+            renderTabs();
+            renderSection();
+            window.scrollTo(0, 0);
+          };
+        if ($("b-next"))
+          $("b-next").onclick = () => {
+            curSec++;
+            renderTabs();
+            renderSection();
+            window.scrollTo(0, 0);
+          };
+        if ($("b-sub")) $("b-sub").onclick = askSubmit;
+        renderPalette();
+      }
+      function renderPalette() {
+        const s = SECS[curSec];
+        $("pal").innerHTML = s.questions
+          .map(
+            (_, qi) =>
+              `<button class="${state.answers[ansKey(curSec, qi)] ? "ans" : ""}" data-q="${qi}">${qi + 1}</button>`,
+          )
+          .join("");
+        $("pal")
+          .querySelectorAll("button")
+          .forEach(
+            (b) =>
+              (b.onclick = () =>
+                $("q-" + b.dataset.q).scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                })),
+          );
+      }
+      function choose(qi, letter) {
+        const k = ansKey(curSec, qi);
+        if (letter) state.answers[k] = letter;
+        else delete state.answers[k];
+        save(KEY, state);
+        const y = window.scrollY;
+        renderSection();
+        window.scrollTo(0, y);
+        renderTabs();
+        updateProgress();
+      }
+      function updateProgress() {
+        $("p-ans").textContent = totalAnswered();
+      }
+
+      /* ---------- submit ---------- */
+      function askSubmit() {
+        const left = TOTAL - totalAnswered();
+        $("modal-msg").textContent =
+          left > 0
+            ? `You have ${left} unanswered question${left > 1 ? "s" : ""}. Once submitted you cannot change your answers.`
+            : "All questions answered. Once submitted you cannot change your answers.";
+        $("modal").classList.remove("hidden");
+      }
+      $("btn-submit-side").onclick = askSubmit;
+      $("m-no").onclick = () => $("modal").classList.add("hidden");
+      $("m-yes").onclick = () => {
+        $("modal").classList.add("hidden");
+        submit(false);
+      };
+
+      function buildResult(auto) {
+        const rows = [],
+          secStats = [];
+        let score = 0,
+          attempted = 0;
+        SECS.forEach((s, si) => {
+          let sc = 0,
+            at = 0;
+          s.questions.forEach((q, qi) => {
+            const sel = state.answers[ansKey(si, qi)] || null;
+            const opts = {};
+            q.options.forEach((o, i) => (opts[LET[i]] = o));
+            const ok = sel === q.answer;
+            if (sel) at++;
+            if (ok) sc++;
+            rows.push({
+              section: s.name,
+              q_no: qi + 1,
+              question: q.q,
+              options: opts,
+              selected_option: sel,
+              selected_text: sel ? opts[sel] : null,
+              correct_option: q.answer,
+              correct_text: opts[q.answer],
+              is_correct: ok,
+            });
+          });
+          score += sc;
+          attempted += at;
+          secStats.push({
+            name: s.name,
+            total: s.questions.length,
+            attempted: at,
+            score: sc,
+          });
+        });
+        const taken = Math.min(
+          DURATION_SEC,
+          Math.round((Date.now() - state.startedAt) / 1000),
+        );
+        return {
+          attemptId: state.attemptId,
+          candidate: state.candidate,
+          startedAt: state.startedAt,
+          submittedAt: Date.now(),
+          auto,
+          timeTaken: taken,
+          score,
+          total: TOTAL,
+          attempted,
+          sections: secStats,
+          rows,
+          saved: false,
+        };
+      }
+      async function submit(auto) {
+        if (submitting) return;
+        submitting = true;
+        $("modal").classList.add("hidden");
+        clearInterval(timerId);
+        lastResult = buildResult(auto);
+        save(RKEY, lastResult);
+        del(KEY);
+        renderResult(lastResult);
+        await saveRemote(lastResult);
+        submitting = false;
+      }
+      async function saveRemote(r) {
+        const st = $("r-status");
+        $("btn-retry").classList.add("hidden");
+        st.className = "status";
+        st.textContent = "Saving your answers…";
+        if (!sb) {
+          st.className = "status bad";
+          st.textContent =
+            "Server not configured. Download your PDF now — answers were not saved online.";
+          return;
+        }
+        try {
+          const { error } = await sb.rpc("submit_attempt", {
+            p_id: r.attemptId,
+            p_name: r.candidate.name,
+            p_email: r.candidate.email,
+            p_phone: r.candidate.phone,
+            p_started_at: new Date(r.startedAt).toISOString(),
+            p_auto: r.auto,
+            p_time_taken: r.timeTaken,
+            p_score: r.score,
+            p_total: r.total,
+            p_attempted: r.attempted,
+            p_answers: r.rows,
+          });
+          if (error) throw error;
+          r.saved = true;
+          save(RKEY, r);
+          st.className = "status ok";
+          st.textContent =
+            "Your answers have been saved. You can download the answer sheet below.";
+        } catch (e) {
+          console.error(e);
+          st.className = "status bad";
+          st.textContent =
+            "Could not save online (" +
+            (e.message || "network error") +
+            "). Download your PDF and press Retry.";
+          $("btn-retry").classList.remove("hidden");
+        }
+      }
+      $("btn-retry").onclick = () => lastResult && saveRemote(lastResult);
+
+      /* ---------- result screen ---------- */
+      function renderResult(r) {
+        show("s-result");
+        $("r-eyebrow").textContent = r.auto
+          ? "Time up · auto-submitted"
+          : "Submitted";
+        $("r-name").textContent = r.candidate.name.toUpperCase();
+        $("r-score").textContent = r.score;
+        $("r-of").textContent =
+          "/ " +
+          r.total +
+          "  ·  " +
+          Math.round((r.score / r.total) * 100) +
+          "%";
+        $("r-meta").textContent =
+          `${r.attempted} attempted · time taken ${fmt(r.timeTaken)}`;
+        $("r-table").innerHTML =
+          `<tr><th>Section</th><th>Attempted</th><th>Correct</th><th>Score</th></tr>` +
+          r.sections
+            .map(
+              (s) =>
+                `<tr><td><b>${esc(s.name)}</b></td><td>${s.attempted}/${s.total}</td><td>${s.score}</td><td>${Math.round((s.score / s.total) * 100)}%</td></tr>`,
+            )
+            .join("");
+        if (r.saved) {
+          $("r-status").className = "status ok";
+          $("r-status").textContent =
+            "Your answers have been saved. You can download the answer sheet below.";
+        }
+      }
+      $("btn-pdf").onclick = () => lastResult && makePDF(lastResult);
+      $("btn-new").onclick = () => {
+        if (
+          !confirm(
+            "Start a new attempt? Download your PDF first if you still need it.",
+          )
+        )
+          return;
+        del(RKEY);
+        del(KEY);
+        state = null;
+        lastResult = null;
+        submitting = false;
+        ["in-name", "in-email", "in-phone"].forEach((i) => ($(i).value = ""));
+        show("s-start");
+      };
+
+      /* ---------- PDF ---------- */
+      function makePDF(r) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: "pt", format: "a4" });
+        const W = doc.internal.pageSize.getWidth(),
+          H = doc.internal.pageSize.getHeight(),
+          M = 42,
+          CW = W - 2 * M;
+        const OR = [232, 69, 30],
+          INK = [12, 12, 12],
+          GR = [10, 138, 74],
+          RD = [200, 40, 30],
+          MU = [110, 110, 110],
+          LN = [220, 216, 210];
+        let y = M;
+        const clean = (s) =>
+          String(s)
+            .replace(/⁴/g, "^4")
+            .replace(/[\u2212\u2010-\u2015]/g, "-")
+            .replace(/[^\x00-\xFF]/g, "?");
+        const need = (h) => {
+          if (y + h > H - 48) {
+            doc.addPage();
+            y = M;
+          }
+        };
+        const write = (s, size, style, color, x = M, w = CW, lh = 1.35) => {
+          doc.setFont("helvetica", style);
+          doc.setFontSize(size);
+          doc.setTextColor(...color);
+          doc.splitTextToSize(clean(s), w).forEach((l) => {
+            need(size * lh);
+            doc.text(l, x, y + size);
+            y += size * lh;
+          });
+        };
+        const rule = (c = LN, wd = 0.8) => {
+          doc.setDrawColor(...c);
+          doc.setLineWidth(wd);
+          doc.line(M, y, W - M, y);
+        };
+
+        // header
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(24);
+        doc.setTextColor(...INK);
+        doc.text("ABOVE", M, y + 20);
+        const aw = doc.getTextWidth("ABOVE");
+        doc.setTextColor(...OR);
+        doc.text("FL360", M + aw, y + 20);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(...MU);
+        doc.text("DGCA METEOROLOGY TEST - ANSWER SHEET", W - M, y + 18, {
+          align: "right",
+        });
+        y += 34;
+        rule(INK, 1.4);
+        y += 16;
+
+        // candidate + score
+        const c = r.candidate;
+        write(c.name, 20, "bold", INK);
+        y += 2;
+        write(`${c.email}   |   ${c.phone}`, 10, "normal", MU);
+        write(
+          `Started: ${new Date(r.startedAt).toLocaleString()}   |   Submitted: ${new Date(r.submittedAt).toLocaleString()}${r.auto ? " (auto-submitted, time up)" : ""}`,
+          9,
+          "normal",
+          MU,
+        );
+        write(
+          `Time taken: ${fmt(r.timeTaken)}   |   Attempted: ${r.attempted}/${r.total}`,
+          9,
+          "normal",
+          MU,
+        );
+        y += 8;
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(34);
+        doc.setTextColor(...OR);
+        doc.text(`${r.score}`, M, y + 30);
+        const sw = doc.getTextWidth(`${r.score}`);
+        doc.setFontSize(15);
+        doc.setTextColor(...MU);
+        doc.text(
+          ` / ${r.total}   (${Math.round((r.score / r.total) * 100)}%)`,
+          M + sw,
+          y + 30,
+        );
+        y += 48;
+
+        // section table
+        const cols = [M, M + 250, M + 350, M + 430];
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(8);
+        doc.setTextColor(...MU);
+        ["SECTION", "ATTEMPTED", "CORRECT", "SCORE"].forEach((t, i) =>
+          doc.text(t, cols[i], y + 8),
+        );
+        y += 14;
+        rule(INK, 1);
+        y += 4;
+        r.sections.forEach((s) => {
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(10);
+          doc.setTextColor(...INK);
+          doc.text(clean(s.name), cols[0], y + 12);
+          doc.setFont("helvetica", "normal");
+          doc.text(`${s.attempted}/${s.total}`, cols[1], y + 12);
+          doc.text(`${s.score}`, cols[2], y + 12);
+          doc.text(
+            `${Math.round((s.score / s.total) * 100)}%`,
+            cols[3],
+            y + 12,
+          );
+          y += 20;
+          rule();
+        });
+        y += 14;
+        write(
+          'Key:  green = correct answer   |   red = your (wrong) answer   |   "Your answer" tag marks what you selected',
+          8,
+          "normal",
+          MU,
+        );
+
+        // questions
+        let cur = "";
+        r.rows.forEach((row) => {
+          if (row.section !== cur) {
+            cur = row.section;
+            doc.addPage();
+            y = M;
+            doc.setFillColor(...OR);
+            doc.rect(M, y, 6, 26, "F");
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.setTextColor(...INK);
+            doc.text(clean(cur).toUpperCase(), M + 16, y + 20);
+            y += 38;
+            rule(INK, 1.2);
+            y += 12;
+          }
+          need(70);
+          write(`Q${row.q_no}.  ${row.question}`, 10.5, "bold", INK, M, CW);
+          y += 3;
+          Object.entries(row.options).forEach(([L, t]) => {
+            const isC = L === row.correct_option,
+              isS = L === row.selected_option;
+            let color = INK,
+              style = "normal",
+              tag = "";
+            if (isC) {
+              color = GR;
+              style = "bold";
+              tag = isS ? "   [Your answer - Correct]" : "   [Correct answer]";
+            } else if (isS) {
+              color = RD;
+              style = "bold";
+              tag = "   [Your answer]";
+            } else color = [70, 70, 70];
+            write(`${L}.  ${t}${tag}`, 9.5, style, color, M + 16, CW - 16, 1.3);
+          });
+          if (!row.selected_option)
+            write("Not attempted", 8.5, "italic", MU, M + 16, CW - 16);
+          y += 5;
+          rule();
+          y += 9;
+        });
+
+        // footer
+        const n = doc.getNumberOfPages();
+        for (let i = 1; i <= n; i++) {
+          doc.setPage(i);
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(8);
+          doc.setTextColor(...MU);
+          doc.text(
+            clean(`AboveFL360  |  ${c.name}  |  Page ${i} of ${n}`),
+            W / 2,
+            H - 24,
+            { align: "center" },
+          );
+        }
+        doc.save(`AboveFL360_Test_${c.name.replace(/[^\w]+/g, "_")}.pdf`);
+      }
+
+      /* ---------- boot / resume ---------- */
+      window.addEventListener("beforeunload", (e) => {
+        if (state && !$("s-test").classList.contains("hidden")) {
+          e.preventDefault();
+          e.returnValue = "";
+        }
+      });
+      (function boot() {
+        const done = load(RKEY);
+        if (done) {
+          lastResult = done;
+          renderResult(done);
+          if (!done.saved) saveRemote(done);
+          return;
+        }
+        const s = load(KEY);
+        if (s) {
+          state = s;
+          if (remaining() <= 0) {
+            submit(true);
+            return;
+          }
+          beginTest();
+        }
+      })();
+    </script>
+  </body>
+</html>
